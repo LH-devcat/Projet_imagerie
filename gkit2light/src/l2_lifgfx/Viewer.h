@@ -1,0 +1,103 @@
+
+#ifndef VIEWER_H
+#define VIEWER_H
+
+
+#include "glcore.h"
+
+#include "window.h"
+#include "program.h"
+#include "texture.h"
+#include "mesh.h"
+#include "draw.h"
+#include "vec.h"
+#include "mat.h"
+#include "orbiter.h"
+#include "app.h"
+
+#include "AnimationCurve.h"
+#include "pacman_core/Jeu.h"
+
+class Viewer : public App
+{
+public:
+    Viewer();
+
+    //! Initialise tout : compile les shaders et construit le programme + les buffers + le vertex array.
+    //! renvoie -1 en cas d'erreur.
+    int init();
+
+    //! La fonction d'affichage
+    int render();
+
+    //! Libere tout
+    int quit();
+
+    void help();
+
+    int update( const float time, const float delta );
+
+protected:
+
+
+    Orbiter m_camera;
+    DrawParam gl;
+    AnimationCurve m_anim;
+    bool mb_cullface;
+    bool mb_wireframe;
+
+    Mesh m_axe;
+    Mesh m_grid;
+    Mesh m_cube;
+    Mesh m_sphere;
+    Mesh m_cubemap;
+    Mesh m_terrain;
+    Mesh m_arbre;
+    GLuint m_arbre_texture;
+    GLuint m_cube_texture;
+    GLuint m_terrain_texture;
+    GLuint m_cubemap_texture;
+
+    Image m_terrain_height_map;
+
+    bool b_draw_grid;
+    bool b_draw_axe;
+    bool b_draw_animation;
+    void init_axe();
+    void init_grid();
+    void init_cube();
+    void init_sphere();
+    void init_terrain();
+    void init_arbre();
+    void init_cubemap();
+
+    /* Pour creer un nouvel objet vous devez :
+       1. declarer ici
+                le Mesh,
+                la texture si besoin,
+                une fonction 'init_votreObjet'
+        2. Appeller la fonction 'init_votreObjet' dans la fonction 'init' du .cpp
+        3. Pour l'affichage, ajouter un appel  gl.draw(votreMesh); dans la fonction 'render' du .cpp
+    */
+    Mesh m_quad;
+    GLuint m_quad_texture;
+    void init_quad();
+    Transform Tquad;
+
+   // Jeu m_pacman;       // pacman
+   // GLuint m_tex_mur;
+  //  GLuint m_tex_pacman;
+  //  GLuint m_tex_fantome;
+  //  GLuint m_tex_pastille;
+
+    void draw_axe(const Transform& T);
+    void draw_cube(const Transform& T, unsigned int tex);
+    void arbre(const Transform& T);
+
+   // void draw_pacman(const Transform& T);
+    void manageCameraLight();
+};
+
+
+
+#endif
